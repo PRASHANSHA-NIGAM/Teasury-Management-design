@@ -1,0 +1,293 @@
+import type { Treasury, Proposal, Transaction, Policy, User, DashboardStats, SpendingByCategory, BalanceHistory } from '@/types';
+
+export const mockUsers: User[] = [
+  {
+    id: '1',
+    name: 'Alice Chen',
+    address: '0x1234...5678',
+    role: 'manager',
+  },
+  {
+    id: '2',
+    name: 'Bob Smith',
+    address: '0x8765...4321',
+    role: 'voter',
+  },
+  {
+    id: '3',
+    name: 'Carol Wang',
+    address: '0xabcd...efgh',
+    role: 'creator',
+  },
+];
+
+export const mockTreasuries: Treasury[] = [
+  {
+    id: '1',
+    name: 'Main Treasury',
+    description: 'Primary DAO treasury for operational expenses',
+    balance: 1250000,
+    threshold: 3,
+    signers: ['0x1234...5678', '0x8765...4321', '0xabcd...efgh', '0xijkl...mnop'],
+    createdAt: '2024-01-15T10:00:00Z',
+    isEmergencyPaused: false,
+  },
+  {
+    id: '2',
+    name: 'Development Fund',
+    description: 'Dedicated fund for development initiatives',
+    balance: 750000,
+    threshold: 2,
+    signers: ['0x1234...5678', '0x8765...4321', '0xabcd...efgh'],
+    createdAt: '2024-02-01T14:30:00Z',
+    isEmergencyPaused: false,
+  },
+  {
+    id: '3',
+    name: 'Marketing Budget',
+    description: 'Treasury for marketing and community growth',
+    balance: 320000,
+    threshold: 2,
+    signers: ['0x1234...5678', '0xabcd...efgh'],
+    createdAt: '2024-03-10T09:15:00Z',
+    isEmergencyPaused: false,
+  },
+];
+
+export const mockProposals: Proposal[] = [
+  {
+    id: '1',
+    treasuryId: '1',
+    title: 'Q2 Development Team Salaries',
+    description: 'Payment for development team salaries for Q2 2024',
+    amount: 150000,
+    recipient: '0xdev1...team',
+    category: 'Salaries',
+    status: 'pending',
+    createdBy: '3',
+    createdAt: '2024-11-20T10:00:00Z',
+    lockUntil: '2024-12-05T10:00:00Z',
+    votes: [
+      {
+        userId: '1',
+        userName: 'Alice Chen',
+        approved: true,
+        timestamp: '2024-11-21T11:30:00Z',
+        signature: '0xsig1...',
+      },
+      {
+        userId: '2',
+        userName: 'Bob Smith',
+        approved: true,
+        timestamp: '2024-11-22T09:15:00Z',
+        signature: '0xsig2...',
+      },
+    ],
+    requiredVotes: 3,
+  },
+  {
+    id: '2',
+    treasuryId: '2',
+    title: 'Smart Contract Audit',
+    description: 'Security audit for new treasury contract upgrades',
+    amount: 50000,
+    recipient: '0xaudit...firm',
+    category: 'Security',
+    status: 'approved',
+    createdBy: '1',
+    createdAt: '2024-11-15T14:20:00Z',
+    lockUntil: '2024-11-25T14:20:00Z',
+    votes: [
+      {
+        userId: '1',
+        userName: 'Alice Chen',
+        approved: true,
+        timestamp: '2024-11-16T10:00:00Z',
+        signature: '0xsig3...',
+      },
+      {
+        userId: '2',
+        userName: 'Bob Smith',
+        approved: true,
+        timestamp: '2024-11-17T11:30:00Z',
+        signature: '0xsig4...',
+      },
+    ],
+    requiredVotes: 2,
+  },
+  {
+    id: '3',
+    treasuryId: '3',
+    title: 'Conference Sponsorship',
+    description: 'Sponsorship for Web3 Summit 2024',
+    amount: 75000,
+    recipient: '0xconf...2024',
+    category: 'Marketing',
+    status: 'executed',
+    createdBy: '3',
+    createdAt: '2024-10-01T09:00:00Z',
+    lockUntil: '2024-10-15T09:00:00Z',
+    executedAt: '2024-10-16T10:30:00Z',
+    votes: [
+      {
+        userId: '1',
+        userName: 'Alice Chen',
+        approved: true,
+        timestamp: '2024-10-02T14:00:00Z',
+        signature: '0xsig5...',
+      },
+      {
+        userId: '3',
+        userName: 'Carol Wang',
+        approved: true,
+        timestamp: '2024-10-03T16:20:00Z',
+        signature: '0xsig6...',
+      },
+    ],
+    requiredVotes: 2,
+  },
+  {
+    id: '4',
+    treasuryId: '1',
+    title: 'Infrastructure Upgrade',
+    description: 'Upgrade cloud infrastructure and database systems',
+    amount: 85000,
+    recipient: '0xinfra...sys',
+    category: 'Infrastructure',
+    status: 'pending',
+    createdBy: '1',
+    createdAt: '2024-11-25T08:30:00Z',
+    lockUntil: '2024-12-10T08:30:00Z',
+    votes: [],
+    requiredVotes: 3,
+  },
+];
+
+export const mockTransactions: Transaction[] = [
+  {
+    id: '1',
+    treasuryId: '3',
+    proposalId: '3',
+    type: 'withdrawal',
+    amount: 75000,
+    from: '0xtreasury3',
+    to: '0xconf...2024',
+    status: 'completed',
+    timestamp: '2024-10-16T10:30:00Z',
+    gasUsed: 0.042,
+    txHash: '0xtx1...hash',
+  },
+  {
+    id: '2',
+    treasuryId: '1',
+    type: 'deposit',
+    amount: 500000,
+    from: '0xdonor...addr',
+    to: '0xtreasury1',
+    status: 'completed',
+    timestamp: '2024-11-10T15:45:00Z',
+    gasUsed: 0.021,
+    txHash: '0xtx2...hash',
+  },
+  {
+    id: '3',
+    treasuryId: '2',
+    type: 'deposit',
+    amount: 250000,
+    from: '0xgrant...fund',
+    to: '0xtreasury2',
+    status: 'completed',
+    timestamp: '2024-11-05T11:20:00Z',
+    gasUsed: 0.019,
+    txHash: '0xtx3...hash',
+  },
+  {
+    id: '4',
+    treasuryId: '1',
+    proposalId: '1',
+    type: 'withdrawal',
+    amount: 150000,
+    from: '0xtreasury1',
+    to: '0xdev1...team',
+    status: 'pending',
+    timestamp: '2024-11-28T09:00:00Z',
+    txHash: '0xtx4...hash',
+  },
+];
+
+export const mockPolicies: Policy[] = [
+  {
+    id: '1',
+    treasuryId: '1',
+    name: 'Daily Spending Limit',
+    type: 'spending_limit',
+    enabled: true,
+    config: {
+      dailyLimit: 100000,
+      perTransactionLimit: 50000,
+    },
+    createdAt: '2024-01-15T10:00:00Z',
+  },
+  {
+    id: '2',
+    treasuryId: '1',
+    name: 'Approved Vendors Whitelist',
+    type: 'whitelist',
+    enabled: true,
+    config: {
+      addresses: ['0xdev1...team', '0xaudit...firm', '0xinfra...sys'],
+    },
+    createdAt: '2024-01-20T14:30:00Z',
+  },
+  {
+    id: '3',
+    treasuryId: '2',
+    name: 'Category Spending Limits',
+    type: 'category_limit',
+    enabled: true,
+    config: {
+      categories: [
+        { name: 'Development', limit: 200000 },
+        { name: 'Security', limit: 100000 },
+        { name: 'Infrastructure', limit: 150000 },
+      ],
+    },
+    createdAt: '2024-02-01T14:30:00Z',
+  },
+  {
+    id: '4',
+    treasuryId: '3',
+    name: 'Monthly Marketing Budget',
+    type: 'spending_limit',
+    enabled: true,
+    config: {
+      monthlyLimit: 150000,
+      perTransactionLimit: 80000,
+    },
+    createdAt: '2024-03-10T09:15:00Z',
+  },
+];
+
+export const mockDashboardStats: DashboardStats = {
+  totalBalance: 2320000,
+  totalTreasuries: 3,
+  activeProposals: 2,
+  completedTransactions: 3,
+  pendingVotes: 2,
+};
+
+export const mockSpendingByCategory: SpendingByCategory[] = [
+  { category: 'Salaries', amount: 450000, percentage: 35 },
+  { category: 'Development', amount: 320000, percentage: 25 },
+  { category: 'Marketing', amount: 260000, percentage: 20 },
+  { category: 'Security', amount: 130000, percentage: 10 },
+  { category: 'Infrastructure', amount: 130000, percentage: 10 },
+];
+
+export const mockBalanceHistory: BalanceHistory[] = [
+  { date: '2024-08-01', balance: 1800000 },
+  { date: '2024-09-01', balance: 1950000 },
+  { date: '2024-10-01', balance: 2100000 },
+  { date: '2024-11-01', balance: 2250000 },
+  { date: '2024-11-29', balance: 2320000 },
+];
